@@ -58,11 +58,3 @@ resource "local_file" "lke_west_yaml" {
     content  = base64decode(linode_lke_cluster.foobar2.kubeconfig)
     filename = "${path.module}/us-west.yaml"
 }
-output "id" {
-   value = linode_lke_cluster.foobar.id
-}
-
-output "pool" {
-   value = linode_lke_cluster.foobar.pool
-}
-    
