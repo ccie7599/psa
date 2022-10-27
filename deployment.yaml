@@ -21,7 +21,7 @@ spec:
             exec:
               command: ["touch", "/run/secrets/edgeauth.key"]
         ports:
-        - containerPort: 12943
+        - containerPort: 12909
       imagePullSecrets:
       - name: regcred
 
