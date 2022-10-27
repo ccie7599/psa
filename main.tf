@@ -20,16 +20,14 @@ resource "linode_lke_cluster" "foobar1" {
     region = "us-east"
     tags = var.tags
 
-    dynamic "pool" {
-        for_each = var.pools
-        content {
-            type  = pool.value["type"]
-            count = pool.value["count"]
-        }
-     autoscaler {
+     pool {
+        type  = "g6-standard-4"
+        count = 3
+
+        autoscaler {
           min = 3
           max = 20
-        }  
+        }
     }
 }
 resource "linode_lke_cluster" "foobar2" {
@@ -38,16 +36,14 @@ resource "linode_lke_cluster" "foobar2" {
     region = "us-west"
     tags = var.tags
 
-    dynamic "pool" {
-        for_each = var.pools
-        content {
-            type  = pool.value["type"]
-            count = pool.value["count"]
-        }
-     autoscaler {
+     pool {
+        type  = "g6-standard-4"
+        count = 3
+
+        autoscaler {
           min = 3
           max = 20
-        }  
+        }
     }
 }
 resource "local_file" "lke_east_yaml" {
