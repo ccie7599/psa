@@ -11,16 +11,31 @@ provider "linode" {
   token = var.token
 }
 
-//Create a random string for the k8s cluster label 
-resource "random_string" "label" {
-  length  = 10
-}
+
 //Use the linode_lke_cluster resource to create
 //a Kubernetes cluster
-resource "linode_lke_cluster" "foobar" {
+resource "linode_lke_cluster" "foobar1" {
     k8s_version = var.k8s_version
-    label = "${random_string.label.result}"
-    region = var.region
+    label = "lke-us-east"
+    region = "us-east"
+    tags = var.tags
+
+    dynamic "pool" {
+        for_each = var.pools
+        content {
+            type  = pool.value["type"]
+            count = pool.value["count"]
+        }
+     autoscaler {
+          min = 3
+          max = 20
+        }  
+    }
+}
+resource "linode_lke_cluster" "foobar2" {
+    k8s_version = var.k8s_version
+    label = "lke-us-west"
+    region = "us-west"
     tags = var.tags
 
     dynamic "pool" {
@@ -36,8 +51,12 @@ resource "linode_lke_cluster" "foobar" {
     }
 }
 resource "local_file" "lke_kubeconfig_yaml" {
-    content  = base64decode(linode_lke_cluster.foobar.kubeconfig)
-    filename = "${path.module}/kubeconfig.yaml"
+    content  = base64decode(linode_lke_cluster.foobar1.kubeconfig)
+    filename = "${path.module}/us-east.yaml"
+}
+resource "local_file" "lke_kubeconfig_yaml" {
+    content  = base64decode(linode_lke_cluster.foobar2.kubeconfig)
+    filename = "${path.module}/us-west.yaml"
 }
 //Export this cluster's attributes
 output "kubeconfig" {
