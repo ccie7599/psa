@@ -32,7 +32,7 @@
       default = [
         {
           type = "g6-standard-4"
-          count = 1
+          count = 3
         },
       ]
     }
