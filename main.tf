@@ -58,19 +58,6 @@ resource "local_file" "lke_west_yaml" {
     content  = base64decode(linode_lke_cluster.foobar2.kubeconfig)
     filename = "${path.module}/us-west.yaml"
 }
-//Export this cluster's attributes
-output "kubeconfig" {
-   value = linode_lke_cluster.foobar.kubeconfig
-   sensitive = true
-}
-output "api_endpoints" {
-   value = linode_lke_cluster.foobar.api_endpoints
-}
-
-output "status" {
-   value = linode_lke_cluster.foobar.status
-}
-
 output "id" {
    value = linode_lke_cluster.foobar.id
 }
