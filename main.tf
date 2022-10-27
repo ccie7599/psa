@@ -29,6 +29,10 @@ resource "linode_lke_cluster" "foobar" {
             type  = pool.value["type"]
             count = pool.value["count"]
         }
+     autoscaler {
+          min = 3
+          max = 20
+        }  
     }
 }
 resource "local_file" "lke_kubeconfig_yaml" {
