@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pelsabr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pelsabr
+  template:
+    metadata:
+      labels:
+        app: pelsabr
+    spec:
+      containers:
+      - name: pelsabr
+        image: registry.public.linode.knows.technology:5000/pelsabr-amd64
+        imagePullPolicy: Always
+        lifecycle:
+          postStart:
+            exec:
+              command: ["touch", "/run/secrets/edgeauth.key"]
+        ports:
+        - containerPort: 12943
+      imagePullSecrets:
+      - name: regcred
+
